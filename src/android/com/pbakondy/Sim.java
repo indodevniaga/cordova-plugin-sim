@@ -51,7 +51,6 @@ import java.util.List;
 public class Sim extends CordovaPlugin {
   private static final String LOG_TAG = "CordovaPluginSim";
 
-
   private static final String GET_SIM_INFO = "getSimInfo";
   private static final String HAS_READ_PERMISSION = "hasReadPermission";
   private static final String REQUEST_READ_PERMISSION = "requestReadPermission";
@@ -86,7 +85,8 @@ public class Sim extends CordovaPlugin {
 
           if (simPermissionGranted(Manifest.permission.READ_PHONE_STATE)) {
 
-            SubscriptionManager subscriptionManager = (SubscriptionManager) context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
+            SubscriptionManager subscriptionManager = (SubscriptionManager) context
+                .getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
             activeSubscriptionInfoCount = subscriptionManager.getActiveSubscriptionInfoCount();
             activeSubscriptionInfoCountMax = subscriptionManager.getActiveSubscriptionInfoCountMax();
 
@@ -97,9 +97,9 @@ public class Sim extends CordovaPlugin {
 
               CharSequence carrierName = subscriptionInfo.getCarrierName();
               String countryIso = subscriptionInfo.getCountryIso();
-              int dataRoaming = subscriptionInfo.getDataRoaming();  // 1 is enabled ; 0 is disabled
+              int dataRoaming = subscriptionInfo.getDataRoaming(); // 1 is enabled ; 0 is disabled
               CharSequence displayName = subscriptionInfo.getDisplayName();
-              String iccId = subscriptionInfo.getIccId();
+              // String iccId = subscriptionInfo.getIccId();
               int mcc = subscriptionInfo.getMcc();
               int mnc = subscriptionInfo.getMnc();
               String number = subscriptionInfo.getNumber();
@@ -111,7 +111,7 @@ public class Sim extends CordovaPlugin {
               String deviceId = null;
               // TelephonyManager.getDeviceId(slotId) requires API 23
               if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-//                 deviceId = manager.getDeviceId(simSlotIndex);
+                // deviceId = manager.getDeviceId(simSlotIndex);
               }
 
               JSONObject simData = new JSONObject();
@@ -128,7 +128,7 @@ public class Sim extends CordovaPlugin {
               if (deviceId != null) {
                 simData.put("deviceId", deviceId);
               }
-              simData.put("simSerialNumber", iccId);
+              // simData.put("simSerialNumber", iccId);
               simData.put("subscriptionId", subscriptionId);
 
               sims.put(simData);
@@ -162,10 +162,10 @@ public class Sim extends CordovaPlugin {
 
       if (simPermissionGranted(Manifest.permission.READ_PHONE_STATE)) {
         phoneNumber = manager.getLine1Number();
-//         deviceId = manager.getDeviceId();
+        // deviceId = manager.getDeviceId();
         deviceSoftwareVersion = manager.getDeviceSoftwareVersion();
-        simSerialNumber = manager.getSimSerialNumber();
-        subscriberId = manager.getSubscriberId();
+        // simSerialNumber = manager.getSimSerialNumber();
+        // subscriberId = manager.getSubscriberId();
       }
 
       String mcc = "";
@@ -192,13 +192,13 @@ public class Sim extends CordovaPlugin {
       result.put("isNetworkRoaming", isNetworkRoaming);
 
       if (phoneCount != null) {
-        result.put("phoneCount", (int)phoneCount);
+        result.put("phoneCount", (int) phoneCount);
       }
       if (activeSubscriptionInfoCount != null) {
-        result.put("activeSubscriptionInfoCount", (int)activeSubscriptionInfoCount);
+        result.put("activeSubscriptionInfoCount", (int) activeSubscriptionInfoCount);
       }
       if (activeSubscriptionInfoCountMax != null) {
-        result.put("activeSubscriptionInfoCountMax", (int)activeSubscriptionInfoCountMax);
+        result.put("activeSubscriptionInfoCountMax", (int) activeSubscriptionInfoCountMax);
       }
 
       if (simPermissionGranted(Manifest.permission.READ_PHONE_STATE)) {
@@ -229,7 +229,7 @@ public class Sim extends CordovaPlugin {
 
   private void hasReadPermission() {
     this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
-      simPermissionGranted(Manifest.permission.READ_PHONE_STATE)));
+        simPermissionGranted(Manifest.permission.READ_PHONE_STATE)));
   }
 
   private void requestReadPermission() {
@@ -253,8 +253,8 @@ public class Sim extends CordovaPlugin {
   }
 
   @Override
-  public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) throws JSONException
-  {
+  public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults)
+      throws JSONException {
     if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
       this.callback.success();
     } else {
