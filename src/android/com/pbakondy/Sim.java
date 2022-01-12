@@ -83,7 +83,7 @@ public class Sim extends CordovaPlugin {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP_MR1) {
 
-          if (simPermissionGranted(Manifest.permission.READ_PHONE_STATE)) {
+          if (simPermissionGranted(Manifest.permission.READ_PHONE_NUMBERS)) {
 
             SubscriptionManager subscriptionManager = (SubscriptionManager) context
                 .getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
@@ -154,7 +154,7 @@ public class Sim extends CordovaPlugin {
 
       int callState = manager.getCallState();
       int dataActivity = manager.getDataActivity();
-      int networkType = manager.getNetworkType();
+      int networkType = 0;
       int phoneType = manager.getPhoneType();
       int simState = manager.getSimState();
 
@@ -228,12 +228,21 @@ public class Sim extends CordovaPlugin {
   }
 
   private void hasReadPermission() {
-    this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
-        simPermissionGranted(Manifest.permission.READ_PHONE_STATE)));
+    if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.R) {
+      this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
+          simPermissionGranted(Manifest.permission.READ_PHONE_STATE)));
+    } else {
+      this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
+          simPermissionGranted(Manifest.permission.READ_PHONE_NUMBERS)));
+    }
   }
 
   private void requestReadPermission() {
-    requestPermission(Manifest.permission.READ_PHONE_STATE);
+    if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.R) {
+      requestPermission(Manifest.permission.READ_PHONE_STATE);
+    } else {
+      requestPermission(Manifest.permission.READ_PHONE_NUMBERS);
+    }
   }
 
   private boolean simPermissionGranted(String type) {
@@ -251,7 +260,7 @@ public class Sim extends CordovaPlugin {
       this.callback.success();
     }
   }
-
+  
   @Override
   public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults)
       throws JSONException {
