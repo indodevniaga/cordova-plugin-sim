@@ -160,13 +160,13 @@ public class Sim extends CordovaPlugin {
 
       boolean isNetworkRoaming = manager.isNetworkRoaming();
 
-      if (simPermissionGranted(Manifest.permission.READ_PHONE_STATE)) {
-        phoneNumber = manager.getLine1Number();
-        // deviceId = manager.getDeviceId();
-        deviceSoftwareVersion = manager.getDeviceSoftwareVersion();
-        // simSerialNumber = manager.getSimSerialNumber();
-        // subscriberId = manager.getSubscriberId();
-      }
+      // if (simPermissionGranted(Manifest.permission.READ_PHONE_STATE)) {
+      // phoneNumber = manager.getLine1Number();
+      // // deviceId = manager.getDeviceId();
+      // deviceSoftwareVersion = manager.getDeviceSoftwareVersion();
+      // // simSerialNumber = manager.getSimSerialNumber();
+      // // subscriberId = manager.getSubscriberId();
+      // }
 
       String mcc = "";
       String mnc = "";
@@ -201,13 +201,13 @@ public class Sim extends CordovaPlugin {
         result.put("activeSubscriptionInfoCountMax", (int) activeSubscriptionInfoCountMax);
       }
 
-      if (simPermissionGranted(Manifest.permission.READ_PHONE_STATE)) {
-        result.put("phoneNumber", phoneNumber);
-        result.put("deviceId", deviceId);
-        result.put("deviceSoftwareVersion", deviceSoftwareVersion);
-        result.put("simSerialNumber", simSerialNumber);
-        result.put("subscriberId", subscriberId);
-      }
+      // if (simPermissionGranted(Manifest.permission.READ_PHONE_STATE)) {
+      // result.put("phoneNumber", phoneNumber);
+      // result.put("deviceId", deviceId);
+      // result.put("deviceSoftwareVersion", deviceSoftwareVersion);
+      // result.put("simSerialNumber", simSerialNumber);
+      // result.put("subscriberId", subscriberId);
+      // }
 
       if (sims != null && sims.length() != 0) {
         result.put("cards", sims);
@@ -228,12 +228,12 @@ public class Sim extends CordovaPlugin {
   }
 
   private void hasReadPermission() {
-      this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
-          simPermissionGranted(Manifest.permission.READ_PHONE_STATE)));
+    this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
+        simPermissionGranted(Manifest.permission.READ_PHONE_STATE)));
   }
 
   private void requestReadPermission() {
-      requestPermission(Manifest.permission.READ_PHONE_STATE);
+    requestPermission(Manifest.permission.READ_PHONE_STATE);
   }
 
   private boolean simPermissionGranted(String type) {
@@ -251,7 +251,7 @@ public class Sim extends CordovaPlugin {
       this.callback.success();
     }
   }
-  
+
   @Override
   public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults)
       throws JSONException {
